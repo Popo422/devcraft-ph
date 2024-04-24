@@ -1,13 +1,13 @@
 import { relations } from 'drizzle-orm';
-import { pgTable, serial, varchar } from 'drizzle-orm/pg-core';
+import { pgTable, serial, uuid, varchar } from 'drizzle-orm/pg-core';
 import { admin } from './admin';
 import { auditHistory } from './audit-history';
 import { employee } from './employee';
 import { manager } from './manager';
 
-export const user = pgTable('user', {
+export const user = pgTable('dc-user', {
   id: serial('id').primaryKey().notNull(),
-  employeeId: varchar('employeeId', { length: 256 }).notNull(),
+  employeeId: uuid('employeeId').defaultRandom().notNull(),
   firstName: varchar('firstName', { length: 256 }).notNull(),
   lastName: varchar('lastName', { length: 256 }),
   email: varchar('email', { length: 256 }).notNull(),

@@ -1,16 +1,19 @@
-import { signIn } from 'next-auth/react';
+'use client';
 import { FormEvent } from 'react';
 
 const Login = () => {
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log('test');
     const formData = new FormData(e.currentTarget);
-    const res = signIn('credentials', {
-      email: formData.get('email'),
-      password: formData.get('password'),
+    const response = await fetch('/api/auth/register', {
+      method: 'POST',
+      body: JSON.stringify({
+        email: formData.get('email'),
+        password: formData.get('password'),
+        firstName: formData.get('firstName'), // Include firstName
+        lastName: formData.get('lastName'), // Include lastName
+      }),
     });
-    console.log(await res);
   };
   return (
     <div className="flex h-screen flex-col items-center justify-center space-y-4 bg-gray-200">
@@ -32,9 +35,31 @@ const Login = () => {
             Password
           </label>
           <input
-            type="text"
+            type="password" // Change type to password for security
             id="password"
             name="password"
+            className="rounded-md p-2"
+          />
+        </div>
+        <div className="mt-4 flex justify-between">
+          <label htmlFor="firstName" className="py-2 pr-4">
+            First Name
+          </label>
+          <input
+            type="text"
+            id="firstName"
+            name="firstName"
+            className="rounded-md p-2"
+          />
+        </div>
+        <div className="mt-4 flex justify-between">
+          <label htmlFor="lastName" className="py-2 pr-4">
+            Last Name
+          </label>
+          <input
+            type="text"
+            id="lastName"
+            name="lastName"
             className="rounded-md p-2"
           />
         </div>
