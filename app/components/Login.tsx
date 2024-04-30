@@ -1,51 +1,33 @@
-import { signIn } from 'next-auth/react';
-import { FormEvent } from 'react';
-
 const Login = () => {
-  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    console.log('test');
-    const formData = new FormData(e.currentTarget);
-    const res = signIn('credentials', {
-      email: formData.get('email'),
-      password: formData.get('password'),
-    });
-    console.log(await res);
-  };
+ 
   return (
-    <div className="flex h-screen flex-col items-center justify-center space-y-4 bg-gray-200">
-      <h1 className="text-center text-xl font-bold">Logo</h1>
-      <form className="flex flex-col" onSubmit={handleSubmit}>
-        <div className="mt-4 flex justify-between">
-          <label htmlFor="email" className="py-2 pr-4">
-            Email Address
-          </label>
-          <input
-            type="text"
+    <div className="flex flex-col space-y-4 items-center justify-center h-screen bg-gray-200">  
+      <h1 className="text-xl font-bold text-center">Logo</h1>
+      <form className="flex flex-col">
+        <div className="flex justify-between mt-4">
+          <label htmlFor="email" className="pr-4 py-2">Email Address</label>
+          <input 
+            type="text" 
             id="email"
             name="email"
-            className="rounded-md p-2"
-          />
+            className="p-2 rounded-md"
+            />
         </div>
-        <div className="mt-4 flex justify-between">
-          <label htmlFor="password" className="py-2 pr-4">
-            Password
-          </label>
+        <div className="flex justify-between mt-4">
+          <label htmlFor="password" className="pr-4 py-2">Password</label>
           <input
-            type="text"
+            type="text" 
             id="password"
             name="password"
-            className="rounded-md p-2"
-          />
+            className="p-2 rounded-md"
+            />
         </div>
-        <button
-          type="submit"
-          className="mt-10 self-center rounded-md bg-gray-500 px-4 py-2 font-bold text-white hover:bg-gray-700"
-        >
+        <button type="submit" className="mt-10 bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded-md self-center">  
           Login
         </button>
       </form>
     </div>
   );
 };
+
 export default Login;

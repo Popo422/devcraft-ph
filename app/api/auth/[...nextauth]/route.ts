@@ -1,50 +1,25 @@
 import NextAuth from 'next-auth';
 import GithubProvider from 'next-auth/providers/github';
-import CredentialsProvider from 'next-auth/providers/credentials';
-import { compare } from 'bcrypt';
-import { db } from '@/db/drizzle/db';
-import { user } from '@/db/drizzle/schema/user';
-import { eq } from 'drizzle-orm';
 
 const handler = NextAuth({
-  session: { strategy: 'jwt' },
   providers: [
-    CredentialsProvider({
-      name: 'Credentials',
-      credentials: {
-        username: {},
-        password: {},
-      },
-      async authorize(credentials, req) {
-        const { email, password } = credentials;
-        console.log(credentials);
-        // Add logic here to look up the user from the credentials supplied
-        const userExists = (
-          await db.select().from(user).where(eq(user.email, email))
-        )[0];
-        const isPasswordValid = await compare(
-          password || '',
-          userExists.password,
-        );
-        if (isPasswordValid) {
-          return { id: userExists.id, email: userExists.email };
-        }
-        return null;
-      },
+    GithubProvider({
+      clientId: process.env.GITHUB_ID ?? '',
+      clientSecret: process.env.GITHUB_SECRET ?? '',
     }),
   ],
-  pages: {
-    signIn: '/',
-    // error: '/auth/error',
-    // signOut: '/auth/signout'
-  },
+  secret: process.env.NEXTAUTH_SECRET,
   callbacks: {
-    async jwt({ token, user, session }) {
-      return { ...token, ...user };
+    async signIn({ user, account, profile, email, credentials }) {
+      console.log(
+        `${JSON.stringify(user)} ${JSON.stringify(account)} ${JSON.stringify(
+          profile
+        )} ${email} ${credentials}`
+      );
+      return true;
     },
-    async session({ session, token, user }) {
-      session.user = token;
-      return session;
+    async redirect({ baseUrl }) {
+      return `${baseUrl}/home`;
     },
   },
 });

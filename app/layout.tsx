@@ -1,7 +1,8 @@
 import type { Metadata } from 'next';
+import { getServerSession } from 'next-auth';
 import { Raleway } from 'next/font/google';
+import SessionProvider from './components/SessionProvider/SessionProvider';
 import './globals.css';
-import { NextAuthProvider } from './components/sessionprovider';
 
 const inter = Raleway({ subsets: ['latin'] });
 
@@ -18,7 +19,9 @@ export default async function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
-        <NextAuthProvider>{children}</NextAuthProvider>
+        <SessionProvider session={await getServerSession()}>
+          {children}
+        </SessionProvider>
       </body>
     </html>
   );

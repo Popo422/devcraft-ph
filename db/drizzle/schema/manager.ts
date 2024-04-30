@@ -3,7 +3,7 @@ import { pgTable, integer, serial } from 'drizzle-orm/pg-core';
 import { employee } from './employee';
 import { user } from './user';
 
-export const manager = pgTable('dc-manager', {
+export const manager = pgTable('manager', {
   id: serial('id').primaryKey().notNull(),
   userId: integer('userId').references(() => manager.id).notNull(),
 });

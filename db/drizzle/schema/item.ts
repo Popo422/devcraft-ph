@@ -2,7 +2,7 @@ import { relations } from 'drizzle-orm';
 import { date, integer, pgTable, serial, varchar } from 'drizzle-orm/pg-core';
 import { auditHistory } from './audit-history';
 
-export const item = pgTable('dc-item', {
+export const item = pgTable('item', {
   id: serial('id').primaryKey().notNull(),
   code: varchar('code', { length: 10 }).notNull(),
   name: varchar('name', { length: 256 }).notNull(),
